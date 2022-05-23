@@ -1,4 +1,4 @@
-import styled, { keyframes, Keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,6 +19,10 @@ const animation = keyframes`
 }
 `;
 
+const Emoji = styled.span`
+font-size: 36px;
+`
+
 const Box = styled.div`
   width: 200px;
   height: 200px;
@@ -27,12 +31,10 @@ const Box = styled.div`
   justify-content: center;
   align-items: center;
   animation: ${animation} 2s linear infinite;
-  span{
-    font-size: 24px;
-    color: white;
-    :hover {
-      font-size: 40px;
-      color: red;
+  ${Emoji} {
+   
+    &:hover {
+      font-size: 98px;
     }
   }
 `;
@@ -40,7 +42,8 @@ const Box = styled.div`
 function App() {
   return (
     <Wrapper>
-      <Box><span>❤</span></Box>
+      <Box><Emoji>💫</Emoji></Box>
+      <Emoji>💫</Emoji>
     </Wrapper>
   );
 }
