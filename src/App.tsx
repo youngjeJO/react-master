@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  background-color: ${(props) => props.theme.bgColor};
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const H1 = styled.h1`
+  color: ${(props) => props.theme.textColor};
+`;
 
 function App() {
-  const [value, setValue] = useState('');
-
-  const inputValue = (event: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setValue(value);
-    console.log(event.currentTarget.value);
-  };
-
-  const onSubmit = (event: React.FocusEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log('hello', value);
-  };
-
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input value={value} onChange={inputValue} type='text' placeholder='user name' />
-        <button>log in</button>
-      </form>
-    </div>
+    <Container>
+      <H1>hello</H1>
+    </Container>
   );
 }
 
