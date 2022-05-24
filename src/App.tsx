@@ -1,5 +1,12 @@
+import Circle from './CIrcle';
+
 function App() {
-  return <div>hi</div>;
+  return (
+    <div>
+      <Circle bgColor='tomato' />
+      <Circle bgColor='teal' />
+    </div>
+  );
 }
 
 export default App;
