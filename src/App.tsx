@@ -32,6 +32,7 @@ body {
 	line-height: 1;
   font-family: 'Source Sans Pro', sans-serif;
   background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
  
 }
 ol, ul {
@@ -51,6 +52,8 @@ table {
 }
 a {
   text-decoration: none;
+  color: inherit;
+
 }
 *{
   box-sizing: border-box;
