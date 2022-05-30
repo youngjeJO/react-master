@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link, Route, Routes, useLocation, useMatch, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +5,7 @@ import { informaionData } from './api';
 import { priceData } from './api';
 import Chart from './Chart';
 import Price from './Price';
+import { Helmet } from 'react-helmet';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -144,14 +143,19 @@ function Coin() {
     ['info', coinId],
     () => informaionData(coinId)
   );
-  const { isLoading: priceLoading, data: pcData } = useQuery<PriceData>(['price', coinId], () =>
-    priceData(coinId)
+  const { isLoading: priceLoading, data: pcData } = useQuery<PriceData>(
+    ['price', coinId],
+    () => priceData(coinId),
+    { refetchInterval: 5000 }
   );
 
   const loading = infoLoading || priceLoading;
 
   return (
     <Container>
+      <Helmet>
+        <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>{' '}
+      </Helmet>
       <Header>
         <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
       </Header>
@@ -169,8 +173,8 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? 'Yes' : 'No'}</span>
+              <span>Price:</span>
+              <span>${pcData?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
