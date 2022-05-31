@@ -22,46 +22,45 @@ function Chart({ coinId }: ChartProps) {
     () => fetchCoinHistory(coinId),
     { refetchInterval: 10000 }
   );
+
+  const candleData = data?.map((price) => ({
+    x: price.time_open,
+    y: [price.open.toFixed(2), price.high.toFixed(2), price.low.toFixed(2), price.close.toFixed(2)],
+  }));
+
   return (
     <div>
       {isLoading ? (
         'Loading chart...'
       ) : (
         <ApexChart
-          type='line'
-          series={[
-            {
-              name: 'price',
-              data: data?.map((price) => price.close) as number[],
-            },
-          ]}
+          type='candlestick'
+          series={
+            [
+              {
+                name: 'price',
+                data: candleData,
+              },
+            ] as unknown as number[]
+          }
           options={{
             theme: { mode: 'dark' },
             chart: {
-              background: '#2f3640',
-              height: 500,
-              width: 500,
               toolbar: { show: false },
-              foreColor: 'transparent',
             },
-            stroke: { curve: 'smooth' },
-            grid: { show: false },
-            yaxis: { show: false },
             xaxis: {
-              labels: { show: false },
-              axisTicks: { show: false },
-              axisBorder: { show: false },
               type: 'datetime',
-              categories: data?.map((price) => price.time_close),
             },
-            fill: {
-              type: 'gradient',
-              gradient: { gradientToColors: ['#55efc4'], stops: [0, 100] },
-            },
-            colors: ['#8c7ae6'],
-            tooltip: {
-              y: { formatter: (value) => `$ ${value.toFixed(3)}` },
-              // x: { formatter: [] },
+            plotOptions: {
+              candlestick: {
+                colors: {
+                  upward: '#eb4d4b',
+                  downward: '#4834d4',
+                },
+                wick: {
+                  useFillColor: true,
+                },
+              },
             },
           }}
         />
