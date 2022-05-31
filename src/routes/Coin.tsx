@@ -100,7 +100,7 @@ interface InformaionData {
   last_data_at: string;
 }
 
-interface PriceData {
+export interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -201,7 +201,7 @@ function Coin() {
 
           <Routes>
             <Route path='chart' element={<Chart coinId={coinId as string} />} />
-            <Route path='price' element={<Price />} />
+            <Route path='price' element={<Price coinId={coinId as string} />} />
           </Routes>
         </>
       )}
