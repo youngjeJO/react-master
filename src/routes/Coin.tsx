@@ -100,7 +100,7 @@ interface InformaionData {
   last_data_at: string;
 }
 
-interface PriceData {
+export interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -157,7 +157,9 @@ function Coin() {
         <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>{' '}
       </Helmet>
       <Header>
-        <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
+        <Link to='/'>
+          <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
+        </Link>
       </Header>
       {loading ? (
         <Loader>loading</Loader>
@@ -199,7 +201,7 @@ function Coin() {
 
           <Routes>
             <Route path='chart' element={<Chart coinId={coinId as string} />} />
-            <Route path='price' element={<Price />} />
+            <Route path='price' element={<Price coinId={coinId as string} />} />
           </Routes>
         </>
       )}
