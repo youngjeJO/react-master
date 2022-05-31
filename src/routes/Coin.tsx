@@ -157,7 +157,9 @@ function Coin() {
         <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>{' '}
       </Helmet>
       <Header>
-        <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
+        <Link to='/'>
+          <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
+        </Link>
       </Header>
       {loading ? (
         <Loader>loading</Loader>
