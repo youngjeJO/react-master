@@ -34,8 +34,6 @@ function Price({ coinId }: PriceProps) {
   );
 
   const quotesData = pcData?.quotes.USD;
-  console.log(pcData);
-
   return (
     <>
       {priceLoading ? (
