@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { fetchCoins } from './api';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isDarkAtom } from '../atoms';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -14,18 +16,28 @@ const Header = styled.header`
   height: 10vh;
   margin-bottom: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  button {
+    margin-top: 10px;
+    padding: 5px;
+    border: none;
+    background-color: ${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.bgColor};
+    border-radius: 20px;
+  }
 `;
 
 const CoinsList = styled.ul``;
 
-const Coin = styled.li`
-  background-color: ${(props) => props.theme.textColor};
-  color: ${(props) => props.theme.bgColor};
+const Coin = styled.li<{ isDark: boolean }>`
+  background-color: ${(props) => (props.isDark ? props.theme.textColor : props.theme.bgColor)};
+  color: ${(props) => (props.isDark ? props.theme.bgColor : props.theme.textColor)};
   margin-bottom: 10px;
   border-radius: 15px;
   font-weight: bold;
+  box-shadow: 5px 5px 5px ${(props) => (props.isDark ? props.theme.bgColor : 'gray')};
   a {
     padding: 20px;
     transition: color 0.4s ease-in;
@@ -67,17 +79,8 @@ interface ICoin {
 
 function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>('allCoins', fetchCoins);
-
-  // const [coins, setCoins] = useState<ICoin[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch('https://api.coinpaprika.com/v1/coins');
-  //     const json = await response.json();
-  //     setCoins(json.slice(0, 100));
-  //     setLoading(false);
-  //   })();
-  // }, []);
+  const setterFn = useSetRecoilState(isDarkAtom);
+  const isDark = useRecoilValue(isDarkAtom);
 
   return (
     <Container>
@@ -86,13 +89,14 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>Coins</Title>
+        <button onClick={() => setterFn((prev) => !prev)}>{isDark ? 'Light' : 'Dark'} Mode</button>
       </Header>
       {isLoading ? (
         <Loader>loading</Loader>
       ) : (
         <CoinsList>
           {data?.slice(0, 100).map((coin) => (
-            <Coin key={coin.id}>
+            <Coin key={coin.id} isDark={isDark}>
               <Link to={`/${coin.id}`} state={{ name: coin.name, rank: coin.rank }}>
                 <Icon
                   src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}

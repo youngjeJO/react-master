@@ -6,6 +6,8 @@ import { priceData } from './api';
 import Chart from './Chart';
 import Price from './Price';
 import { Helmet } from 'react-helmet';
+import { useRecoilValue } from 'recoil';
+import { isDarkAtom } from '../atoms';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -39,10 +41,11 @@ const Overview = styled.div`
   padding: 10px 20px;
   border-radius: 10px;
 `;
-const OverviewItem = styled.div`
+const OverviewItem = styled.div<{ isDark: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: ${(props) => (props.isDark ? props.theme.textColor : props.theme.bgColor)};
   span:first-child {
     font-size: 10px;
     font-weight: 400;
@@ -69,7 +72,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
-  color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+  color: ${(props) => (props.isActive ? props.theme.accentColor : '#f5f6fa')};
   a {
     display: block;
   }
@@ -137,6 +140,7 @@ export interface PriceData {
 function Coin() {
   const { coinId } = useParams<{ coinId: string }>();
   const state = useLocation().state as StateInterface;
+  const isDark = useRecoilValue(isDarkAtom);
   const priceMatch = useMatch('/:coinId/price');
   const chartMatch = useMatch('/:coinId/chart');
   const { isLoading: infoLoading, data: infoData } = useQuery<InformaionData>(
@@ -166,26 +170,26 @@ function Coin() {
       ) : (
         <>
           <Overview>
-            <OverviewItem>
+            <OverviewItem isDark={isDark}>
               <span>Rank:</span>
               <span>{infoData?.rank}</span>
             </OverviewItem>
-            <OverviewItem>
+            <OverviewItem isDark={isDark}>
               <span>Symbol:</span>
               <span>${infoData?.symbol}</span>
             </OverviewItem>
-            <OverviewItem>
+            <OverviewItem isDark={isDark}>
               <span>Price:</span>
               <span>${pcData?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
           <Overview>
-            <OverviewItem>
+            <OverviewItem isDark={isDark}>
               <span>Total Suply:</span>
               <span>{pcData?.total_supply}</span>
             </OverviewItem>
-            <OverviewItem>
+            <OverviewItem isDark={isDark}>
               <span>Max Supply:</span>
               <span>{pcData?.max_supply}</span>
             </OverviewItem>
